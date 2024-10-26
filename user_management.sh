@@ -18,7 +18,6 @@
 # Run the script with appropriate options:
 #   - add_user: Adds a new user with specified username and default settings
 #   - del_user: Deletes a user by username
-#   - mod_user: Modifies an existing user account (e.g., change home directory)
 #
 # Example:
 #   ./user_management.sh add_user <username>
@@ -29,4 +28,82 @@
 # Author: Shaunak Khare
 # Created: October 26, 2024
 # ========================================
+
+add_user(){
+	local username="$1"
+	local password="$2"
+	local groupname="$3"
+
+	#Create a user
+	useradd -m -s /bin/bash "$username"
+	echo "$username:$password" | chpasswd
+	
+	#Add user to a group
+	usermod -aG "$groupname" "$username"
+	
+	echo "User $username is added successfully."
+}
+
+
+del_user(){
+	local username="$1"
+	
+	#delete a user
+	userdel -r "$username"
+
+	echo "User $username deleted."
+
+}
+
+change_passwd(){
+	local username="$1"
+	
+	#Change the password of user
+	passwd "$username"
+
+}
+
+# change_home_dir() {
+# 	local username="$1"
+# 	local dirname="$2"
+
+
+
+# 	#Change the home directory of user
+# 	cd /home/$username
+# 	mkdir "$dirname"
+# 	usermod -d "$dirname" "$username"
+
+# }
+
+
+add_group(){
+	local username="$1"
+	local groupname="$2"
+	
+	#Add user to a predefined group
+	
+	usermod -aG "$groupname" "$username"
+
+}
+
+set_acc_expiry() {
+	local username="$1"
+	local date="$2"
+
+	#Set user account expiry date
+
+	chage -E "$date" "$username"
+}
+
+
+
+
+
+
+
+
+
+
+
 
